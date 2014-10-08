@@ -220,7 +220,7 @@ bool Sudoku::Check_Conflicts(int p, int i, int j)
 
 void Sudoku::Help_Solve(int i, int j)
 {
-	cout << "Help_Solved:" << i << " " << j << endl;
+	cout << "Help_Solved:" << i << " " << j << " " << board[i][j] << " " << change[i][j] << endl;
 
 	if (j <= 0)
 	{
