@@ -15,6 +15,7 @@ class Sudoku
 private:
 	int board[10][10];
 	int change[10][10];
+	int number_of_solutions;
 public:
 	Sudoku();
 	void Print_Board();
@@ -38,6 +39,8 @@ Sudoku::Sudoku()
 	for (int i = 1; i <= 9; i++)
 		for (int j = 1; j <= 9; j++)
 			board[i][j] = 0;
+
+	number_of_solutions = 0;
 }
 
 void Sudoku::Print_Board()
