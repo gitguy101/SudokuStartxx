@@ -13,8 +13,8 @@ using namespace std;
 class Sudoku
 {
 private:
-	int board[9][9];
-	int change[9][9];
+	int board[10][10];
+	int change[10][10];
 public:
 	Sudoku();
 	void Print_Board();
@@ -227,19 +227,29 @@ void Sudoku::Help_Solve(int i, int j)
 		i = i - 1;
 		j = 9;
 	}
-	if (change[i][j] == 1) return Game.Help_Solve(i, j - 1);
+
+	if (change[i][j] == 1)
+	{
+		Game.Help_Solve(i, j - 1);
+		return;
+	}
+
 	for (int p = 1; p <= 9; p++)
 		if (Game.Check_Conflicts(p, i, j))
 		{
-		board[i][j] = p;
-		return;
+			board[i][j] = p;
+			return;
 		}
-	return Game.Help_Solve(i, j - 1);
 
+	board[i][j] = 0;
+	Game.Help_Solve(i, j - 1);
+	return;
 }
 
 void Sudoku::Solve()
 {
+	cout << "First pass" << endl;
+
 	for (int i = 1; i <= 9; i++)
 	{
 		for (int j = 1; j <= 9; j++)
@@ -250,6 +260,8 @@ void Sudoku::Solve()
 			}
 		}
 	}
+
+	cout << "Second pass" << endl;
 
 	for (int i = 1; i <= 9; i++)
 		for (int j = 1; j <= 9; j++)
