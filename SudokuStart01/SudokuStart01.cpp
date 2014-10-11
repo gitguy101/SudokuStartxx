@@ -281,30 +281,33 @@ void Sudoku::SolveOld()
 
 bool Sudoku::NextTryOrBackTrack(int *i_ptr, int *j_ptr)
 {
-	cout << "NextTryOrBackTrack:" << *i_ptr << " " << *j_ptr << " " << board[*i_ptr][*j_ptr] << " " << permanent[*i_ptr][*j_ptr] << endl;
+	int p;
 
-	if (j <= 0)
+	cout << "NextTryOrBackTrack Entry :" << *i_ptr << " " << *j_ptr << " " << board[*i_ptr][*j_ptr] << " " << permanent[*i_ptr][*j_ptr] << endl;
+
+	if (permanent[*i_ptr][*j_ptr] == true)
 	{
-		i = i - 1;
-		j = 9;
+		cout << "NextTryOrBackTrack Exit 1:" << *i_ptr << " " << *j_ptr << " " << board[*i_ptr][*j_ptr] << " " << permanent[*i_ptr][*j_ptr] << endl;
+		return false;
 	}
 
-	if (permanent[i][j] == true)
-	{
-		Game.Help_Solve(i, j - 1);
-		return;
-	}
+	p = board[*i_ptr][*j_ptr];
+	p++;
 
-	for (int p = 1; p <= 9; p++)
-		if (Game.Check_Conflicts(p, i, j))
+	while (p <= 9)
+	{
+		if (Game.Check_Conflicts(p, *i_ptr, *j_ptr))
 		{
-		board[i][j] = p;
-		return;
+			board[*i_ptr][*j_ptr] = p;
+			cout << "NextTryOrBackTrack Exit 2:" << *i_ptr << " " << *j_ptr << " " << board[*i_ptr][*j_ptr] << " " << permanent[*i_ptr][*j_ptr] << endl;
+			return false;
 		}
+		p++;
+	}
 
-	board[i][j] = 0;
-	Game.Help_Solve(i, j - 1);
-	return;
+	board[*i_ptr][*j_ptr] = 0;
+	cout << "NextTryOrBackTrack Exit 3:" << *i_ptr << " " << *j_ptr << " " << board[*i_ptr][*j_ptr] << " " << permanent[*i_ptr][*j_ptr] << endl;
+	return true;
 }
 
 void Sudoku::Solve()
@@ -321,6 +324,7 @@ void Sudoku::Solve()
 				backtrack = Game.NextTryOrBackTrack(&i, &j);
 				if (backtrack)
 				{
+
 					j = j - 1;
 
 					if (j <= 0)
@@ -340,15 +344,25 @@ void Sudoku::Solve()
 				}
 			}
 
+			j = 1;
 			i++;
 		}
 
-		cout << "Found a Solution:" << number_of_solutions << endl;
+		number_of_solutions++;
 
-		???
+		cout << "Found a Solution: " << number_of_solutions << endl;
+
+		Game.Print_Board();
+
+		j = 9;
+		i = 9;
 	}
 }
 
+int Sudoku::get_number_of_solutions(void)
+{
+	return number_of_solutions;
+}
 
 int _tmain(int argc, _TCHAR* argv[])
 {
@@ -356,11 +370,11 @@ int _tmain(int argc, _TCHAR* argv[])
 	Game.Print_Board();
 	Game.Solve();
 
-	if (Game.get_number_of_solutions == 0)
+	if (Game.get_number_of_solutions() == 0)
 	{
 		cout << "No Solutions" << endl;
 	}
-	else if (Game.get_number_of_solutions == 1)
+	else if (Game.get_number_of_solutions() == 1)
 	{
 		cout << "One unique solution!" << endl;
 	}
