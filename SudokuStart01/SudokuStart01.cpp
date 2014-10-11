@@ -283,11 +283,11 @@ bool Sudoku::NextTryOrBackTrack(int *i_ptr, int *j_ptr)
 {
 	int p;
 
-	cout << "NextTryOrBackTrack Entry :" << *i_ptr << " " << *j_ptr << " " << board[*i_ptr][*j_ptr] << " " << permanent[*i_ptr][*j_ptr] << endl;
+//	cout << "NextTryOrBackTrack Entry :" << *i_ptr << " " << *j_ptr << " " << board[*i_ptr][*j_ptr] << " " << permanent[*i_ptr][*j_ptr] << endl;
 
 	if (permanent[*i_ptr][*j_ptr] == true)
 	{
-		cout << "NextTryOrBackTrack Exit 1:" << *i_ptr << " " << *j_ptr << " " << board[*i_ptr][*j_ptr] << " " << permanent[*i_ptr][*j_ptr] << endl;
+//		cout << "NextTryOrBackTrack Exit 1:" << *i_ptr << " " << *j_ptr << " " << board[*i_ptr][*j_ptr] << " " << permanent[*i_ptr][*j_ptr] << endl;
 		return false;
 	}
 
@@ -299,14 +299,14 @@ bool Sudoku::NextTryOrBackTrack(int *i_ptr, int *j_ptr)
 		if (Game.Check_Conflicts(p, *i_ptr, *j_ptr))
 		{
 			board[*i_ptr][*j_ptr] = p;
-			cout << "NextTryOrBackTrack Exit 2:" << *i_ptr << " " << *j_ptr << " " << board[*i_ptr][*j_ptr] << " " << permanent[*i_ptr][*j_ptr] << endl;
+//			cout << "NextTryOrBackTrack Exit 2:" << *i_ptr << " " << *j_ptr << " " << board[*i_ptr][*j_ptr] << " " << permanent[*i_ptr][*j_ptr] << endl;
 			return false;
 		}
 		p++;
 	}
 
 	board[*i_ptr][*j_ptr] = 0;
-	cout << "NextTryOrBackTrack Exit 3:" << *i_ptr << " " << *j_ptr << " " << board[*i_ptr][*j_ptr] << " " << permanent[*i_ptr][*j_ptr] << endl;
+//	cout << "NextTryOrBackTrack Exit 3:" << *i_ptr << " " << *j_ptr << " " << board[*i_ptr][*j_ptr] << " " << permanent[*i_ptr][*j_ptr] << endl;
 	return true;
 }
 
