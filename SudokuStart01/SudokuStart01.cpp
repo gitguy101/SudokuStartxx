@@ -20,7 +20,7 @@ public:
 	Sudoku();
 	void Print_Board();
 	void Add_First_Cord();
-	bool NextTryOrBackTrack(int *i_ptr, int *j_ptr);
+	bool NextTryOrBackTrack(int *i_ptr, int *j_ptr, bool backtrack);
 	void Solve();
 	void SolveOld();
 	void Help_Solve(int i, int j);
@@ -104,8 +104,8 @@ void Sudoku::Add_First_Cord()
 	board[8][6] = 9; permanent[8][6] = true;
 	board[8][9] = 5; permanent[8][9] = true;
 	board[9][5] = 8; permanent[9][5] = true;
-	board[9][8] = 7; permanent[9][8] = true;
-	board[9][9] = 9; permanent[9][9] = true;
+//	board[9][8] = 7; permanent[9][8] = true;
+//	board[9][9] = 9; permanent[9][9] = true;
 }
 
 bool Sudoku::Check_Conflicts(int p, int i, int j)
@@ -125,7 +125,7 @@ bool Sudoku::Check_Conflicts(int p, int i, int j)
 	{
 		if (board[i][j + 1] == p || board[i][j + 2] == p || board[i + 1][j] == p ||
 			board[i + 2][j] == p || board[i + 1][j + 1] == p || board[i + 1][j + 2] == p ||
-			board[i + 2][j + 1] == p || board[i + 2][j + 2] == p)return false;
+			board[i + 2][j + 1] == p || board[i + 2][j + 2] == p) return false;
 	}
 
 	/*
@@ -136,8 +136,8 @@ bool Sudoku::Check_Conflicts(int p, int i, int j)
 	if ((j == 1 || j == 4 || j == 7) && (i == 2 || i == 5 || i == 8))
 	{
 		if (board[i - 1][j] == p || board[i + 1][j] == p || board[i - 1][j + 1] == p ||
-			board[i][j + 1] == p || board[i + 1][j + 1] == p || board[i + 1][j + 2] == p ||
-			board[i][j + 2] == p || board[i + 1][j + 2] == p)return false;
+			board[i][j + 1] == p || board[i + 1][j + 1] == p || board[i - 1][j + 2] == p ||
+			board[i][j + 2] == p || board[i + 1][j + 2] == p) return false;
 	}
 
 	/*
@@ -149,7 +149,7 @@ bool Sudoku::Check_Conflicts(int p, int i, int j)
 	{
 		if (board[i - 1][j] == p || board[i - 2][j] == p || board[i][j + 1] == p ||
 			board[i][j + 2] == p || board[i - 1][j + 1] == p || board[i - 1][j + 2] == p ||
-			board[i - 2][j + 1] == p || board[i - 2][j + 2] == p)return false;
+			board[i - 2][j + 1] == p || board[i - 2][j + 2] == p) return false;
 	}
 
 	/*
@@ -159,9 +159,9 @@ bool Sudoku::Check_Conflicts(int p, int i, int j)
 	*/
 	if ((j == 2 || j == 5 || j == 8) && (i == 1 || i == 5 || i == 7))
 	{
-		if (board[i - 1][j] == p || board[i + 1][j] == p || board[i - 1][j + 1] == p ||
-			board[i][j + 1] == p || board[i + 1][j + 1] == p || board[i + 1][j + 2] == p ||
-			board[i][j + 2] == p || board[i + 1][j + 2] == p)return false;
+		if (board[i][j - 1] == p || board[i][j + 1] == p || board[i + 1][j - 1] == p ||
+			board[i + 1][j] == p || board[i + 1][j + 1] == p || board[i + 2][j - 1] == p ||
+			board[i + 2][j] == p || board[i + 2][j + 1] == p) return false;
 	}
 
 	/*
@@ -172,8 +172,8 @@ bool Sudoku::Check_Conflicts(int p, int i, int j)
 	if ((j == 2 || j == 5 || j == 8) && (i == 2 || i == 5 || i == 8))
 	{
 		if (board[i - 1][j] == p || board[i - 1][j - 1] == p || board[i - 1][j + 1] == p ||
-			board[i][j + 1] == p || board[i][j - 1] == p || board[i + 1][j + 1] == p ||
-			board[i][j] == p || board[i + 1][j - 1] == p)return false;
+			board[i][j + 1] == p || board[i][j - 1] == p || board[i + 1][j - 1] == p ||
+			board[i + 1][j] == p || board[i + 1][j + 1] == p)return false;
 	}
 
 	/*
@@ -219,7 +219,7 @@ bool Sudoku::Check_Conflicts(int p, int i, int j)
 	*/
 	if ((j == 3 || j == 6 || j == 9) && (i == 3 || i == 6 || i == 9))
 	{
-		if (board[i][j - 1] == p || board[i][j - 1] == p || board[i - 1][j] == p ||
+		if (board[i][j - 1] == p || board[i][j - 2] == p || board[i - 1][j] == p ||
 			board[i - 1][j - 1] == p || board[i - 1][j - 2] == p || board[i - 2][j] == p ||
 			board[i - 2][j - 1] == p || board[i - 2][j - 2] == p) return false;
 	}
@@ -279,16 +279,23 @@ void Sudoku::SolveOld()
 }
 
 
-bool Sudoku::NextTryOrBackTrack(int *i_ptr, int *j_ptr)
+bool Sudoku::NextTryOrBackTrack(int *i_ptr, int *j_ptr, bool last_backtrack)
 {
 	int p;
 
-//	cout << "NextTryOrBackTrack Entry :" << *i_ptr << " " << *j_ptr << " " << board[*i_ptr][*j_ptr] << " " << permanent[*i_ptr][*j_ptr] << endl;
+//	cout << "NextTryOrBackTrack Entry  :" << *i_ptr << " " << *j_ptr << " " << board[*i_ptr][*j_ptr] << " " << permanent[*i_ptr][*j_ptr] << endl;
 
 	if (permanent[*i_ptr][*j_ptr] == true)
 	{
-//		cout << "NextTryOrBackTrack Exit 1:" << *i_ptr << " " << *j_ptr << " " << board[*i_ptr][*j_ptr] << " " << permanent[*i_ptr][*j_ptr] << endl;
-		return false;
+		if (last_backtrack)
+		{
+//			cout << "NextTryOrBackTrack Exit 1a:" << *i_ptr << " " << *j_ptr << " " << board[*i_ptr][*j_ptr] << " " << permanent[*i_ptr][*j_ptr] << endl;
+			return true;
+		}
+		else {
+//			cout << "NextTryOrBackTrack Exit 1b:" << *i_ptr << " " << *j_ptr << " " << board[*i_ptr][*j_ptr] << " " << permanent[*i_ptr][*j_ptr] << endl;
+			return false;
+		}
 	}
 
 	p = board[*i_ptr][*j_ptr];
@@ -299,21 +306,21 @@ bool Sudoku::NextTryOrBackTrack(int *i_ptr, int *j_ptr)
 		if (Game.Check_Conflicts(p, *i_ptr, *j_ptr))
 		{
 			board[*i_ptr][*j_ptr] = p;
-//			cout << "NextTryOrBackTrack Exit 2:" << *i_ptr << " " << *j_ptr << " " << board[*i_ptr][*j_ptr] << " " << permanent[*i_ptr][*j_ptr] << endl;
+//			cout << "NextTryOrBackTrack Exit 2 :" << *i_ptr << " " << *j_ptr << " " << board[*i_ptr][*j_ptr] << " " << permanent[*i_ptr][*j_ptr] << endl;
 			return false;
 		}
 		p++;
 	}
 
 	board[*i_ptr][*j_ptr] = 0;
-//	cout << "NextTryOrBackTrack Exit 3:" << *i_ptr << " " << *j_ptr << " " << board[*i_ptr][*j_ptr] << " " << permanent[*i_ptr][*j_ptr] << endl;
+//	cout << "NextTryOrBackTrack Exit 3 :" << *i_ptr << " " << *j_ptr << " " << board[*i_ptr][*j_ptr] << " " << permanent[*i_ptr][*j_ptr] << endl;
 	return true;
 }
 
 void Sudoku::Solve()
 {
 	int i = 1, j = 1;
-	bool backtrack;
+	bool backtrack = false;
 
 	while (true)
 	{
@@ -321,7 +328,7 @@ void Sudoku::Solve()
 		{
 			while (j <= 9)
 			{
-				backtrack = Game.NextTryOrBackTrack(&i, &j);
+				backtrack = Game.NextTryOrBackTrack(&i, &j, backtrack);
 				if (backtrack)
 				{
 
@@ -356,6 +363,7 @@ void Sudoku::Solve()
 
 		j = 9;
 		i = 9;
+		backtrack = true;
 	}
 }
 
@@ -380,7 +388,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	}
 	else
 	{
-		cout << "Too many solutions" << endl;
+		cout << "Too many solutions: " << Game.get_number_of_solutions() << endl;
 	}
 //	Game.Print_Board();
 
