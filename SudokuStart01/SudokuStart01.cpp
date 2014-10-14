@@ -10,25 +10,23 @@
 
 using namespace std;
 
-class Sudoku
+class Sudoku9by9SolverAnalyzer
 {
 private:
 	int board[10][10];
 	bool permanent[10][10];
 	int number_of_solutions;
 public:
-	Sudoku();
+	Sudoku9by9SolverAnalyzer();
 	void Print_Board();
 	void Add_First_Cord();
-	bool NextTryOrBackTrack(int *i_ptr, int *j_ptr, bool backtrack);
+	bool NextTryOrBackTrack(int i, int j, bool backtrack);
 	void Solve();
-	void SolveOld();
-	void Help_Solve(int i, int j);
 	bool Check_Conflicts(int p, int i, int j);
 	int get_number_of_solutions(void);
 };
 
-Sudoku Game;
+Sudoku9by9SolverAnalyzer Game;
 
 void setcolor(unsigned short color)                 //The function that you'll use to
 {                                                   //set the colour
@@ -37,7 +35,7 @@ void setcolor(unsigned short color)                 //The function that you'll u
 }
 
 
-Sudoku::Sudoku()
+Sudoku9by9SolverAnalyzer::Sudoku9by9SolverAnalyzer()
 {
 	for (int i = 1; i <= 9; i++)
 		for (int j = 1; j <= 9; j++)
@@ -49,7 +47,7 @@ Sudoku::Sudoku()
 	number_of_solutions = 0;
 }
 
-void Sudoku::Print_Board()
+void Sudoku9by9SolverAnalyzer::Print_Board()
 {
 	cout << endl << "--+------+-------+---------" << endl;
 
@@ -74,7 +72,7 @@ void Sudoku::Print_Board()
 	}
 }
 
-void Sudoku::Add_First_Cord()
+void Sudoku9by9SolverAnalyzer::Add_First_Cord()
 {
 	board[1][1] = 5; permanent[1][1] = true;
 	board[1][2] = 3; permanent[1][2] = true;
@@ -104,11 +102,12 @@ void Sudoku::Add_First_Cord()
 	board[8][6] = 9; permanent[8][6] = true;
 	board[8][9] = 5; permanent[8][9] = true;
 	board[9][5] = 8; permanent[9][5] = true;
-//	board[9][8] = 7; permanent[9][8] = true;
-//	board[9][9] = 9; permanent[9][9] = true;
+//	board[9][7] = 4; permanent[9][7] = true;
+	board[9][8] = 7; permanent[9][8] = true;
+	board[9][9] = 9; permanent[9][9] = true;
 }
 
-bool Sudoku::Check_Conflicts(int p, int i, int j)
+bool Sudoku9by9SolverAnalyzer::Check_Conflicts(int p, int i, int j)
 {
 	for (int k = 1; k <= 9; k++)
 		if (board[i][k] == p) return false;
@@ -227,97 +226,45 @@ bool Sudoku::Check_Conflicts(int p, int i, int j)
 	return true;
 }
 
-void Sudoku::Help_Solve(int i, int j)
-{
-	cout << "Help_Solved:" << i << " " << j << " " << board[i][j] << " " << permanent[i][j] << endl;
-
-	if (j <= 0)
-	{
-		i = i - 1;
-		j = 9;
-	}
-
-	if (permanent[i][j] == true)
-	{
-		Game.Help_Solve(i, j - 1);
-		return;
-	}
-
-	for (int p = 1; p <= 9; p++)
-		if (Game.Check_Conflicts(p, i, j))
-		{
-			board[i][j] = p;
-			return;
-		}
-
-	board[i][j] = 0;
-	Game.Help_Solve(i, j - 1);
-	return;
-}
-
-void Sudoku::SolveOld()
-{
-	cout << "First pass" << endl;
-
-	for (int i = 1; i <= 9; i++)
-	{
-		for (int j = 1; j <= 9; j++)
-		{
-			if (board[i][j] == 0 && permanent[i][j] == 0)
-			{
-				Game.Help_Solve(i, j);
-			}
-		}
-	}
-
-	cout << "Second pass" << endl;
-
-	for (int i = 1; i <= 9; i++)
-		for (int j = 1; j <= 9; j++)
-			if (board[i][j] == 0) Game.Help_Solve(i, j);
-
-}
-
-
-bool Sudoku::NextTryOrBackTrack(int *i_ptr, int *j_ptr, bool last_backtrack)
+bool Sudoku9by9SolverAnalyzer::NextTryOrBackTrack(int i, int j, bool last_backtrack)
 {
 	int p;
 
-//	cout << "NextTryOrBackTrack Entry  :" << *i_ptr << " " << *j_ptr << " " << board[*i_ptr][*j_ptr] << " " << permanent[*i_ptr][*j_ptr] << endl;
+//	cout << "NextTryOrBackTrack Entry  :" << i << " " << j << " " << board[i][j] << " " << permanent[i][j] << endl;
 
-	if (permanent[*i_ptr][*j_ptr] == true)
+	if (permanent[i][j] == true)
 	{
 		if (last_backtrack)
 		{
-//			cout << "NextTryOrBackTrack Exit 1a:" << *i_ptr << " " << *j_ptr << " " << board[*i_ptr][*j_ptr] << " " << permanent[*i_ptr][*j_ptr] << endl;
+//			cout << "NextTryOrBackTrack Exit 1a:" << i << " " << j << " " << board[i][j] << " " << permanent[i][j] << endl;
 			return true;
 		}
 		else {
-//			cout << "NextTryOrBackTrack Exit 1b:" << *i_ptr << " " << *j_ptr << " " << board[*i_ptr][*j_ptr] << " " << permanent[*i_ptr][*j_ptr] << endl;
+//			cout << "NextTryOrBackTrack Exit 1b:" << i << " " << j << " " << board[i][j] << " " << permanent[i][j] << endl;
 			return false;
 		}
 	}
 
-	p = board[*i_ptr][*j_ptr];
+	p = board[i][j];
 	p++;
 
 	while (p <= 9)
 	{
-		if (Game.Check_Conflicts(p, *i_ptr, *j_ptr))
+		if (Game.Check_Conflicts(p, i, j))
 		{
-			board[*i_ptr][*j_ptr] = p;
-//			cout << "NextTryOrBackTrack Exit 2 :" << *i_ptr << " " << *j_ptr << " " << board[*i_ptr][*j_ptr] << " " << permanent[*i_ptr][*j_ptr] << endl;
+			board[i][j] = p;
+//			cout << "NextTryOrBackTrack Exit 2 :" << i << " " << j << " " << board[i][j] << " " << permanent[i][j] << endl;
 			return false;
 		}
 		p++;
 	}
 
-	board[*i_ptr][*j_ptr] = 0;
-//	cout << "NextTryOrBackTrack Exit 3 :" << *i_ptr << " " << *j_ptr << " " << board[*i_ptr][*j_ptr] << " " << permanent[*i_ptr][*j_ptr] << endl;
+	board[i][j] = 0;
+//	cout << "NextTryOrBackTrack Exit 3 :" << i << " " << j << " " << board[i][j] << " " << permanent[i][j] << endl;
 	return true;
 }
 
-void Sudoku::Solve()
+void Sudoku9by9SolverAnalyzer::Solve()
 {
 	int i = 1, j = 1;
 	bool backtrack = false;
@@ -328,7 +275,7 @@ void Sudoku::Solve()
 		{
 			while (j <= 9)
 			{
-				backtrack = Game.NextTryOrBackTrack(&i, &j, backtrack);
+				backtrack = Game.NextTryOrBackTrack(i, j, backtrack);
 				if (backtrack)
 				{
 
@@ -367,7 +314,7 @@ void Sudoku::Solve()
 	}
 }
 
-int Sudoku::get_number_of_solutions(void)
+int Sudoku9by9SolverAnalyzer::get_number_of_solutions(void)
 {
 	return number_of_solutions;
 }
