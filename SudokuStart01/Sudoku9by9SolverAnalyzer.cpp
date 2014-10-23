@@ -2,120 +2,126 @@
 //	Sudoku9by9SolverAnalyzer.cpp
 //
 
-bool Sudoku9by9SolverAnalyzer::Check_Conflicts(int p, int i, int j)
+bool Sudoku9by9SolverAnalyzer::Cell_Conflict_Check(int p, int i, int j)
 {
+	//
+	//	Check along the containing Row
+	//
 	for (int k = 1; k <= 9; k++)
 		if (board[i][k] == p) return false;
 
+	//
+	//	Check along the containing Column
+	//
 	for (int q = 1; q <= 9; q++)
 		if (board[q][j] == p) return false;
 
-	/*
-	*00
-	000
-	000
-	*/
-	if ((j == 1 || j == 4 || j == 7) && (i == 1 || i == 4 || i == 7))
+	//
+	//	Check left Column of the containing Box
+	//
+	if (j == 1 || j == 4 || j == 7)
 	{
-		if (board[i][j + 1] == p || board[i][j + 2] == p || board[i + 1][j] == p ||
-			board[i + 2][j] == p || board[i + 1][j + 1] == p || board[i + 1][j + 2] == p ||
-			board[i + 2][j + 1] == p || board[i + 2][j + 2] == p) return false;
+		//
+		//	Check left upper Cell
+		//
+		if (i == 1 || i == 4 || i == 7))
+		{
+			if (board[i][j + 1] == p || board[i][j + 2] == p || board[i + 1][j] == p ||
+				board[i + 2][j] == p || board[i + 1][j + 1] == p || board[i + 1][j + 2] == p ||
+				board[i + 2][j + 1] == p || board[i + 2][j + 2] == p) return false;
+		}
+
+		//
+		//	Check left middle Cell
+		//
+		else if (i == 2 || i == 5 || i == 8)
+		{
+			if (board[i - 1][j] == p || board[i + 1][j] == p || board[i - 1][j + 1] == p ||
+				board[i][j + 1] == p || board[i + 1][j + 1] == p || board[i - 1][j + 2] == p ||
+				board[i][j + 2] == p || board[i + 1][j + 2] == p) return false;
+		}
+
+		//
+		//	Check left lower Cell
+		//
+		else if (i == 3 || i == 6 || i == 9)
+		{
+			if (board[i - 1][j] == p || board[i - 2][j] == p || board[i][j + 1] == p ||
+				board[i][j + 2] == p || board[i - 1][j + 1] == p || board[i - 1][j + 2] == p ||
+				board[i - 2][j + 1] == p || board[i - 2][j + 2] == p) return false;
+		}
 	}
 
-	/*
-	000
-	*00
-	000
-	*/
-	if ((j == 1 || j == 4 || j == 7) && (i == 2 || i == 5 || i == 8))
+	//
+	//	Check middle Column of the containing Box
+	//
+	else if (j == 2 || j == 5 || j == 8)
 	{
-		if (board[i - 1][j] == p || board[i + 1][j] == p || board[i - 1][j + 1] == p ||
-			board[i][j + 1] == p || board[i + 1][j + 1] == p || board[i - 1][j + 2] == p ||
-			board[i][j + 2] == p || board[i + 1][j + 2] == p) return false;
+		//
+		// Check middle upper Cell
+		//
+		if (i == 1 || i == 5 || i == 7))
+		{
+			if (board[i][j - 1] == p || board[i][j + 1] == p || board[i + 1][j - 1] == p ||
+				board[i + 1][j] == p || board[i + 1][j + 1] == p || board[i + 2][j - 1] == p ||
+				board[i + 2][j] == p || board[i + 2][j + 1] == p) return false;
+		}
+
+		//
+		// Check middle middle Cell (center Cell of containing box)
+		//
+		else if (i == 2 || i == 5 || i == 8))
+		{
+			if (board[i - 1][j] == p || board[i - 1][j - 1] == p || board[i - 1][j + 1] == p ||
+				board[i][j + 1] == p || board[i][j - 1] == p || board[i + 1][j - 1] == p ||
+				board[i + 1][j] == p || board[i + 1][j + 1] == p) return false;
+		}
+
+		//
+		// Check middle lower Cell
+		//
+		else if (i == 3 || i == 6 || i == 9)
+		{
+			if (board[i][j - 1] == p || board[i][j + 1] == p || board[i - 1][j] == p ||
+				board[i - 1][j + 1] == p || board[i - 1][j - 1] == p || board[i - 2][j] == p ||
+				board[i - 1][j + 1] == p || board[i - 2][j - 1] == p) return false;
+		}
 	}
 
-	/*
-	000
-	000
-	*00
-	*/
-	if ((j == 1 || j == 4 || j == 7) && (i == 3 || i == 6 || i == 9))
+	//
+	//	Check right Column of containing Box
+	//
+	else if (j == 3 || j == 6 || j == 9)
 	{
-		if (board[i - 1][j] == p || board[i - 2][j] == p || board[i][j + 1] == p ||
-			board[i][j + 2] == p || board[i - 1][j + 1] == p || board[i - 1][j + 2] == p ||
-			board[i - 2][j + 1] == p || board[i - 2][j + 2] == p) return false;
-	}
+		//
+		//	Check right upper Cell
+		//
+		if (i == 1 || i == 4 || i == 7))
+		{
+			if (board[i][j - 1] == p || board[i][j - 2] == p || board[i + 1][j] == p ||
+				board[i + 1][j - 1] == p || board[i + 1][j - 2] == p || board[i + 2][j] == p ||
+				board[i + 2][j - 1] == p || board[i + 2][j - 2] == p) return false;
+		}
 
-	/*
-	0*0
-	000
-	000
-	*/
-	if ((j == 2 || j == 5 || j == 8) && (i == 1 || i == 5 || i == 7))
-	{
-		if (board[i][j - 1] == p || board[i][j + 1] == p || board[i + 1][j - 1] == p ||
-			board[i + 1][j] == p || board[i + 1][j + 1] == p || board[i + 2][j - 1] == p ||
-			board[i + 2][j] == p || board[i + 2][j + 1] == p) return false;
-	}
+		//
+		//	Check right middle Cell
+		//
+		else if (i == 2 || i == 5 || i == 8)
+		{
+			if (board[i - 1][j] == p || board[i - 1][j - 1] == p || board[i - 1][j - 2] == p ||
+				board[i][j - 1] == p || board[i][j - 2] == p || board[i + 1][j] == p ||
+				board[i + 1][j - 1] == p || board[i + 1][j - 2] == p) return false;
+		}
 
-	/*
-	000
-	0*0
-	000
-	*/
-	if ((j == 2 || j == 5 || j == 8) && (i == 2 || i == 5 || i == 8))
-	{
-		if (board[i - 1][j] == p || board[i - 1][j - 1] == p || board[i - 1][j + 1] == p ||
-			board[i][j + 1] == p || board[i][j - 1] == p || board[i + 1][j - 1] == p ||
-			board[i + 1][j] == p || board[i + 1][j + 1] == p)return false;
-	}
-
-	/*
-	000
-	000
-	0*0
-	*/
-	if ((j == 2 || j == 5 || j == 8) && (i == 3 || i == 6 || i == 9))
-	{
-		if (board[i][j - 1] == p || board[i][j + 1] == p || board[i - 1][j] == p ||
-			board[i - 1][j + 1] == p || board[i - 1][j - 1] == p || board[i - 2][j] == p ||
-			board[i - 1][j + 1] == p || board[i - 2][j - 1] == p) return false;
-	}
-
-	/*
-	00*
-	000
-	000
-	*/
-	if ((j == 3 || j == 6 || j == 9) && (i == 1 || i == 4 || i == 7))
-	{
-		if (board[i][j - 1] == p || board[i][j - 2] == p || board[i + 1][j] == p ||
-			board[i + 1][j - 1] == p || board[i + 1][j - 2] == p || board[i + 2][j] == p ||
-			board[i + 2][j - 1] == p || board[i + 2][j - 2] == p) return false;
-	}
-
-	/*
-	000
-	00*
-	000
-	*/
-	if ((j == 3 || j == 6 || j == 9) && (i == 2 || i == 5 || i == 8))
-	{
-		if (board[i - 1][j] == p || board[i - 1][j - 1] == p || board[i - 1][j - 2] == p ||
-			board[i][j - 1] == p || board[i][j - 2] == p || board[i + 1][j] == p ||
-			board[i + 1][j - 1] == p || board[i + 1][j - 2] == p) return false;
-	}
-
-	/*
-	000
-	000
-	00*
-	*/
-	if ((j == 3 || j == 6 || j == 9) && (i == 3 || i == 6 || i == 9))
-	{
-		if (board[i][j - 1] == p || board[i][j - 2] == p || board[i - 1][j] == p ||
-			board[i - 1][j - 1] == p || board[i - 1][j - 2] == p || board[i - 2][j] == p ||
-			board[i - 2][j - 1] == p || board[i - 2][j - 2] == p) return false;
+		//
+		//	Check right lower Cell
+		//
+		else if (i == 3 || i == 6 || i == 9))
+		{
+			if (board[i][j - 1] == p || board[i][j - 2] == p || board[i - 1][j] == p ||
+				board[i - 1][j - 1] == p || board[i - 1][j - 2] == p || board[i - 2][j] == p ||
+				board[i - 2][j - 1] == p || board[i - 2][j - 2] == p) return false;
+		}
 	}
 
 	return true;
@@ -145,7 +151,7 @@ bool Sudoku9by9SolverAnalyzer::NextTryOrBackTrack(int i, int j, bool last_backtr
 
 	while (p <= 9)
 	{
-		if (Game.Check_Conflicts(p, i, j))
+		if (Game.Cell_Conflict_Check(p, i, j))
 		{
 			board[i][j] = p;
 			//			cout << "NextTryOrBackTrack Exit 2 :" << i << " " << j << " " << board[i][j] << " " << permanent[i][j] << endl;

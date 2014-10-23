@@ -35,9 +35,10 @@ void Sudoku9by9Board::Print_Board()
 			else cout << board[i][j] << " ";
 			if (j % 3 == 0) cout << "| ";
 		}
-		cout << endl;
-		if (i % 3 == 0) cout << "--+------+-------+---------" << endl;
 
+		cout << endl;
+
+		if (i % 3 == 0) cout << "--+------+-------+---------" << endl;
 	}
 }
 

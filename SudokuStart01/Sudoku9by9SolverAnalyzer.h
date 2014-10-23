@@ -14,7 +14,7 @@ public:
 	Sudoku9by9SolverAnalyzer(Sudoku9by9Board *board_ptr);
 	bool NextTryOrBackTrack(int i, int j, bool backtrack);
 	void Solve(void);
-	bool Check_Conflicts(int p, int i, int j);
+	bool Cell_Conflict_Check(int p, int i, int j);
 	int get_number_of_solutions(void);
 	~Sudoku9by9SolverAnalyzer();
 };
