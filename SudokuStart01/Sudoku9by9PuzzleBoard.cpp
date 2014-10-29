@@ -1,10 +1,10 @@
 //
-// Sudoku9by9Board.cpp
+// Sudoku9by9PuzzleBoard.cpp
 //
 
-#include "Sudoku9by9Board.h"
+#include "Sudoku9by9PuzzleBoard.h"
 
-Sudoku9by9Board::Sudoku9by9Board()
+Sudoku9by9PuzzleBoard::Sudoku9by9PuzzleBoard()
 {
 	for (int i = 1; i <= 9; i++)
 		for (int j = 1; j <= 9; j++)
@@ -16,7 +16,7 @@ Sudoku9by9Board::Sudoku9by9Board()
 	number_of_solutions_for_unit_test_check = NOSFUNTC_NOTSET;		/* Not set yet */
 }
 
-void Sudoku9by9Board::Print_Board()
+void Sudoku9by9PuzzleBoard::Print_PuzzleBoard()
 {
 	cout << endl << "--+------+-------+---------" << endl;
 
@@ -42,7 +42,7 @@ void Sudoku9by9Board::Print_Board()
 	}
 }
 
-void Sudoku9by9Board::BuiltInUnitTest01Puzzle()
+void Sudoku9by9PuzzleBoard::BuiltInUnitTest01Puzzle()
 {
 	board[1][1] = 5; permanent[1][1] = true;
 	board[1][2] = 3; permanent[1][2] = true;
@@ -84,7 +84,7 @@ void Sudoku9by9Board::BuiltInUnitTest01Puzzle()
 	board[9][9] = 9; permanent[9][9] = true;
 }
 
-void Sudoku9by9Board::BuiltInUnitTest01Solution()
+void Sudoku9by9PuzzleBoard::BuiltInUnitTest01Solution()
 {
 	number_of_solutions_for_unit_test_check = 1;		/* one unique solution */
 
