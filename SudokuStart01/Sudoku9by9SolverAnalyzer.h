@@ -2,7 +2,7 @@
 //	Sudoku 9by9 Solver and Analyzer
 //
 
-#include "Sudoku9by9Board.h"
+#include "Sudoku9by9PuzzleBoard.h"
 
 class Sudoku9by9SolverAnalyzer
 {
