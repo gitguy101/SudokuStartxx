@@ -7,7 +7,7 @@
 class Sudoku9by9SolverAnalyzer
 {
 private:
-	Sudoku9by9Board *board_ptr;
+	Sudoku9by9PuzzleBoard *board_ptr;
 	int number_of_solutions;
 public:
 	Sudoku9by9SolverAnalyzer();
