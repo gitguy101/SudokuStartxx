@@ -2,19 +2,48 @@
 //	Sudoku9by9SolverAnalyzer.cpp
 //
 
+#include "Sudoku9by9SolverAnalyzer.h"
+
+Sudoku9by9SolverAnalyzer()
+{
+	number_of_solutions = 0;
+}
+
+Sudoku9by9SolverAnalyzer(Sudoku9by9PuzzleBoard *passed_puzzle_board_ptr)
+{
+	number_of_solutions = 0;
+
+	puzzle_board_ptr = passed_puzzle_board_ptr;
+}
+
+int ReadCell(int row, int column)
+{
+	return(puzzle_board_ptr->ReadCell(row, column));
+}
+
+int ReadPermanent(int row, int column)
+{
+	return(puzzle_board_ptr->ReadPermanent(row, column));
+}
+
+status_t WriteCell(int row, int column, int cell_value)
+{
+	return(puzzle_board_ptr->WriteCell(int row, int column, int cell_value);
+}
+
 bool Sudoku9by9SolverAnalyzer::Cell_Conflict_Check(int cell_value, int row, int column)
 {
 	//
 	//	Check along the containing Row
 	//
 	for (int i = 1; i <= 9; i++)
-		if (board[row][i] == cell_value) return false;
+		if (ReadCell(row, i) == cell_value) return false;
 
 	//
 	//	Check along the containing Column
 	//
 	for (int i = 1; i <= 9; i++)
-		if (board[i][column] == cell_value) return false;
+		if (ReadCell(i, column) == cell_value) return false;
 
 	//
 	//	Check left Column of the containing Box
@@ -26,9 +55,9 @@ bool Sudoku9by9SolverAnalyzer::Cell_Conflict_Check(int cell_value, int row, int 
 		//
 		if (row == 1 || row == 4 || row == 7))
 		{
-			if (board[row][column + 1] == cell_value || board[row][column + 2] == cell_value || board[row + 1][column] == cell_value ||
-				board[row + 2][column] == cell_value || board[row + 1][column + 1] == cell_value || board[row + 1][column + 2] == cell_value ||
-				board[row + 2][column + 1] == cell_value || board[row + 2][column + 2] == cell_value) return false;
+			if (ReadCell(row, column + 1) == cell_value || ReadCell(row, column + 2) == cell_value || ReadCell(row + 1, column) == cell_value ||
+				ReadCell(row + 2, column) == cell_value || ReadCell(row + 1, column + 1) == cell_value || ReadCell(row + 1, column + 2) == cell_value ||
+				ReadCell(row + 2, column + 1) == cell_value || ReadCell(row + 2, column + 2) == cell_value) return false;
 		}
 
 		//
@@ -36,9 +65,9 @@ bool Sudoku9by9SolverAnalyzer::Cell_Conflict_Check(int cell_value, int row, int 
 		//
 		else if (row == 2 || row == 5 || row == 8)
 		{
-			if (board[row - 1][column] == cell_value || board[row + 1][column] == cell_value || board[row - 1][column + 1] == cell_value ||
-				board[row][column + 1] == cell_value || board[row + 1][column + 1] == cell_value || board[row - 1][column + 2] == cell_value ||
-				board[row][column + 2] == cell_value || board[row + 1][column + 2] == cell_value) return false;
+			if (ReadCell(row - 1, column) == cell_value || ReadCell(row + 1, column) == cell_value || ReadCell(row - 1, column + 1) == cell_value ||
+				ReadCell(row, column + 1) == cell_value || ReadCell(row + 1, column + 1) == cell_value || ReadCell(row - 1, column + 2) == cell_value ||
+				ReadCell(row, column + 2) == cell_value || ReadCell(row + 1, column + 2) == cell_value) return false;
 		}
 
 		//
@@ -46,9 +75,9 @@ bool Sudoku9by9SolverAnalyzer::Cell_Conflict_Check(int cell_value, int row, int 
 		//
 		else if (row == 3 || row == 6 || row == 9)
 		{
-			if (board[row - 1][column] == cell_value || board[row - 2][column] == cell_value || board[row][column + 1] == cell_value ||
-				board[row][column + 2] == cell_value || board[row - 1][column + 1] == cell_value || board[row - 1][column + 2] == cell_value ||
-				board[row - 2][column + 1] == cell_value || board[row - 2][column + 2] == cell_value) return false;
+			if (ReadCell(row - 1, column) == cell_value || ReadCell(row - 2, column) == cell_value || ReadCell(row, column + 1) == cell_value ||
+				ReadCell(row, column + 2) == cell_value || ReadCell(row - 1, column + 1) == cell_value || ReadCell(row - 1, column + 2) == cell_value ||
+				ReadCell(row - 2, column + 1) == cell_value || ReadCell(row - 2, column + 2) == cell_value) return false;
 		}
 	}
 
@@ -62,9 +91,9 @@ bool Sudoku9by9SolverAnalyzer::Cell_Conflict_Check(int cell_value, int row, int 
 		//
 		if (row == 1 || row == 5 || row == 7))
 		{
-			if (board[row][column - 1] == cell_value || board[row][column + 1] == cell_value || board[row + 1][column - 1] == cell_value ||
-				board[row + 1][column] == cell_value || board[row + 1][column + 1] == cell_value || board[row + 2][column - 1] == cell_value ||
-				board[row + 2][column] == cell_value || board[row + 2][column + 1] == cell_value) return false;
+			if (ReadCell(row, column - 1) == cell_value || ReadCell(row, column + 1) == cell_value || ReadCell(row + 1, column - 1) == cell_value ||
+				ReadCell(row + 1, column) == cell_value || ReadCell(row + 1, column + 1) == cell_value || ReadCell(row + 2, column - 1) == cell_value ||
+				ReadCell(row + 2, column) == cell_value || ReadCell(row + 2, column + 1) == cell_value) return false;
 		}
 
 		//
@@ -72,9 +101,9 @@ bool Sudoku9by9SolverAnalyzer::Cell_Conflict_Check(int cell_value, int row, int 
 		//
 		else if (row == 2 || row == 5 || row == 8))
 		{
-			if (board[row - 1][column] == cell_value || board[row - 1][column - 1] == cell_value || board[row - 1][column + 1] == cell_value ||
-				board[row][column + 1] == cell_value || board[row][column - 1] == cell_value || board[row + 1][column - 1] == cell_value ||
-				board[row + 1][column] == cell_value || board[row + 1][column + 1] == cell_value) return false;
+			if (ReadCell(row - 1, column) == cell_value || ReadCell(row - 1, column - 1) == cell_value || ReadCell(row - 1, column + 1) == cell_value ||
+				ReadCell(row, column + 1) == cell_value || ReadCell(row, column - 1) == cell_value || ReadCell(row + 1, column - 1) == cell_value ||
+				ReadCell(row + 1, column) == cell_value || ReadCell(row + 1, column + 1) == cell_value) return false;
 		}
 
 		//
@@ -82,9 +111,9 @@ bool Sudoku9by9SolverAnalyzer::Cell_Conflict_Check(int cell_value, int row, int 
 		//
 		else if (row == 3 || row == 6 || row == 9)
 		{
-			if (board[row][column - 1] == cell_value || board[row][column + 1] == cell_value || board[row - 1][column] == cell_value ||
-				board[row - 1][column + 1] == cell_value || board[row - 1][column - 1] == cell_value || board[row - 2][column] == cell_value ||
-				board[row - 1][column + 1] == cell_value || board[row - 2][column - 1] == cell_value) return false;
+			if (ReadCell(row, column - 1) == cell_value || ReadCell(row, column + 1) == cell_value || ReadCell(row - 1, column) == cell_value ||
+				ReadCell(row - 1, column + 1) == cell_value || ReadCell(row - 1, column - 1) == cell_value || ReadCell(row - 2, column) == cell_value ||
+				ReadCell(row - 1, column + 1) == cell_value || ReadCell(row - 2, column - 1) == cell_value) return false;
 		}
 	}
 
@@ -98,9 +127,9 @@ bool Sudoku9by9SolverAnalyzer::Cell_Conflict_Check(int cell_value, int row, int 
 		//
 		if (row == 1 || row == 4 || row == 7))
 		{
-			if (board[row][column - 1] == cell_value || board[row][column - 2] == cell_value || board[row + 1][column] == cell_value ||
-				board[row + 1][column - 1] == cell_value || board[row + 1][column - 2] == cell_value || board[row + 2][column] == cell_value ||
-				board[row + 2][column - 1] == cell_value || board[row + 2][column - 2] == cell_value) return false;
+			if (ReadCell(row, column - 1) == cell_value || ReadCell(row, column - 2) == cell_value || ReadCell(row + 1, column) == cell_value ||
+				ReadCell(row + 1, column - 1) == cell_value || ReadCell(row + 1, column - 2) == cell_value || ReadCell(row + 2, column) == cell_value ||
+				ReadCell(row + 2, column - 1) == cell_value || ReadCell(row + 2, column - 2) == cell_value) return false;
 		}
 
 		//
@@ -108,9 +137,9 @@ bool Sudoku9by9SolverAnalyzer::Cell_Conflict_Check(int cell_value, int row, int 
 		//
 		else if (row == 2 || row == 5 || row == 8)
 		{
-			if (board[row - 1][column] == cell_value || board[row - 1][column - 1] == cell_value || board[row - 1][column - 2] == cell_value ||
-				board[row][column - 1] == cell_value || board[row][column - 2] == cell_value || board[row + 1][column] == cell_value ||
-				board[row + 1][column - 1] == cell_value || board[row + 1][column - 2] == cell_value) return false;
+			if (ReadCell(row - 1, column) == cell_value || ReadCell(row - 1, column - 1) == cell_value || ReadCell(row - 1, column - 2) == cell_value ||
+				ReadCell(row, column - 1) == cell_value || ReadCell(row, column - 2) == cell_value || ReadCell(row + 1, column) == cell_value ||
+				ReadCell(row + 1, column - 1) == cell_value || ReadCell(row + 1, column - 2) == cell_value) return false;
 		}
 
 		//
@@ -118,9 +147,9 @@ bool Sudoku9by9SolverAnalyzer::Cell_Conflict_Check(int cell_value, int row, int 
 		//
 		else if (row == 3 || row == 6 || row == 9))
 		{
-			if (board[row][column - 1] == cell_value || board[row][column - 2] == cell_value || board[row - 1][column] == cell_value ||
-				board[row - 1][column - 1] == cell_value || board[row - 1][column - 2] == cell_value || board[row - 2][column] == cell_value ||
-				board[row - 2][column - 1] == cell_value || board[row - 2][column - 2] == cell_value) return false;
+			if (ReadCell(row, column - 1) == cell_value || ReadCell(row, column - 2) == cell_value || ReadCell(row - 1, column) == cell_value ||
+				ReadCell(row - 1, column - 1) == cell_value || ReadCell(row - 1, column - 2) == cell_value || ReadCell(row - 2, column) == cell_value ||
+				ReadCell(row - 2, column - 1) == cell_value || ReadCell(row - 2, column - 2) == cell_value) return false;
 		}
 	}
 
@@ -131,37 +160,37 @@ bool Sudoku9by9SolverAnalyzer::NextTryOrBackTrack(int row, int column, bool last
 {
 	int cell_value;
 
-	//	cout << "NextTryOrBackTrack Entry  :" << row << " " << column << " " << board[row][column] << " " << permanent[row][column] << endl;
+	//	cout << "NextTryOrBackTrack Entry  :" << row << " " << column << " " << ReadCell(row, column) << " " << ReadPermanent(row, column) << endl;
 
-	if (permanent[row][column] == true)
+	if (ReadPermanent(row, column) == true)
 	{
 		if (last_backtrack)
 		{
-			//			cout << "NextTryOrBackTrack Exit 1a:" << row << " " << column << " " << board[row][column] << " " << permanent[row][column] << endl;
+			//			cout << "NextTryOrBackTrack Exit 1a:" << row << " " << column << " " << ReadCell(row, column) << " " << ReadPermanent(row, column) << endl;
 			return true;
 		}
 		else {
-			//			cout << "NextTryOrBackTrack Exit 1b:" << row << " " << column << " " << board[row][column] << " " << permanent[row][column] << endl;
+			//			cout << "NextTryOrBackTrack Exit 1b:" << row << " " << column << " " << ReadCell(row, column) << " " << ReadPermanent(row, column) << endl;
 			return false;
 		}
 	}
 
-	cell_value = board[row][column];
+	cell_value = ReadCell(row, column);
 	cell_value++;
 
 	while (cell_value <= 9)
 	{
-		if (Game.Cell_Conflict_Check(cell_value, row, column))
+		if (Cell_Conflict_Check(cell_value, row, column))
 		{
-			board[row][column] = cell_value;
-			//			cout << "NextTryOrBackTrack Exit 2 :" << row << " " << column << " " << board[row][column] << " " << permanent[row][column] << endl;
+			WriteCell(row, column, cell_value);
+			//			cout << "NextTryOrBackTrack Exit 2 :" << row << " " << column << " " << ReadCell(row, column) << " " << ReadPermanent(row, column) << endl;
 			return false;
 		}
 		cell_value++;
 	}
 
-	board[row][column] = 0;
-	//	cout << "NextTryOrBackTrack Exit 3 :" << row << " " << column << " " << board[row][column] << " " << permanent[row][column] << endl;
+	WriteCell(row, column, 0);
+	//	cout << "NextTryOrBackTrack Exit 3 :" << row << " " << column << " " << ReadCell(row, column) << " " << ReadPermanent(row, column) << endl;
 	return true;
 }
 
@@ -170,13 +199,15 @@ void Sudoku9by9SolverAnalyzer::Solve()
 	int row = 1, column = 1;
 	bool backtrack = false;
 
+	puzzle_board_ptr->number_of_solutions_for_unit_test_check = 0;
+
 	while (true)
 	{
 		while (row <= 9)
 		{
 			while (column <= 9)
 			{
-				backtrack = Game.NextTryOrBackTrack(row, column, backtrack);
+				backtrack = NextTryOrBackTrack(row, column, backtrack);
 				if (backtrack)
 				{
 
@@ -204,10 +235,11 @@ void Sudoku9by9SolverAnalyzer::Solve()
 		}
 
 		number_of_solutions++;
+		puzzle_board_ptr->number_of_solutions_for_unit_test_check++;
 
 		cout << "Found a Solution: " << number_of_solutions << endl;
 
-		Game.Print_Board();
+		puzzle_board_ptr->Print_Board();
 
 		column = 9;
 		row = 9;

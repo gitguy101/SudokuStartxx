@@ -16,11 +16,16 @@ private:
 	int number_of_solutions_for_unit_test_check;
 public:
 	Sudoku9by9PuzzleBoard();
+
 	int ReadCell(int row, int column);
+	int ReadPermanent(int row, int column);
 	status_t WriteCell(int row, int column, int cell_value);
+
 	void Print_PuzzleBoard();
+
 	void BuiltInUnitTest01Puzzle();
 	void BuiltInUnitTest01Solution();
+
 	~Sudoku9by9PuzzleBoard();
 };
 

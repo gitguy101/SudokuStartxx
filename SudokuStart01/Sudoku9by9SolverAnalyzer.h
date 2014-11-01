@@ -7,14 +7,20 @@
 class Sudoku9by9SolverAnalyzer
 {
 private:
-	Sudoku9by9PuzzleBoard *board_ptr;
+	Sudoku9by9PuzzleBoard *puzzle_board_ptr;
 	int number_of_solutions;
 public:
 	Sudoku9by9SolverAnalyzer();
 	Sudoku9by9SolverAnalyzer(Sudoku9by9Board *board_ptr);
+
+	int ReadCell(int row, int column);
+	int ReadPermanent(int row, int column);
+	status_t WriteCell(int row, int column, int cell_value);
+
 	bool NextTryOrBackTrack(int i, int j, bool backtrack);
 	void Solve(void);
 	bool Cell_Conflict_Check(int p, int i, int j);
 	int get_number_of_solutions(void);
+
 	~Sudoku9by9SolverAnalyzer();
 };

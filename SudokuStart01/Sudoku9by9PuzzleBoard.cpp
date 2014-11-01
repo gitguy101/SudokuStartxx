@@ -21,6 +21,11 @@ int ReadCell(int row, int column)
 	return(cells[row][column]);
 }
 
+int ReadPermanent(int row, int column)
+{
+	return(permanent[row][column]);
+}
+
 status_t WriteCell(int row, int column, int cell_value)
 {
 	cells[row][column] = cell_value;
