@@ -2,6 +2,8 @@
 //	Sudoku9by9PuzzleBoard.h
 //
 
+#ifndef SUDOKU9BY9PUZZLEBOARD_H
+#define SUDOKU9BY9PUZZLEBOARD_H
 
 #define NOSFUNTC_NOTSET -1
 #define SUDOKU_SUCCESS 0
@@ -18,7 +20,7 @@ public:
 	Sudoku9by9PuzzleBoard();
 
 	int ReadCell(int row, int column);
-	int ReadPermanent(int row, int column);
+	bool ReadPermanent(int row, int column);
 	status_t WriteCell(int row, int column, int cell_value);
 
 	void Print_PuzzleBoard();
@@ -26,6 +28,11 @@ public:
 	void BuiltInUnitTest01Puzzle();
 	void BuiltInUnitTest01Solution();
 
+	void set_number_of_solutions_for_unit_test_check(int);
+	void increment_number_of_solutions_for_unit_test_check(void);
+	int read_number_of_solutions_for_unit_test_check(void);
+
 	~Sudoku9by9PuzzleBoard();
 };
 
+#endif

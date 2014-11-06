@@ -44,7 +44,5 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	PuzzleTestSubject001.Print_PuzzleBoard();
 
-	system("pause");
-
 	return 0;
 }

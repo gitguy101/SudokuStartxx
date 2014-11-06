@@ -1,9 +1,33 @@
 //
 // Sudoku9by9PuzzleBoard.cpp
 //
+#include "stdafx.h"
+#include <iostream>
+#include <iomanip>
+#include <time.h>
+#include <cstdlib>
+#include <windows.h>
+
+using namespace std;
 
 #include "Sudoku9by9PuzzleBoard.h"
 
+//
+// set console character color
+//
+
+#define COLOR_RED 12
+#define COLOR_WHITE 7
+
+void SetColor(unsigned short passed_color)            
+{
+	HANDLE console_handle = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(console_handle, passed_color);
+}
+
+//
+// Constructor
+//
 Sudoku9by9PuzzleBoard::Sudoku9by9PuzzleBoard()
 {
 	for (int i = 1; i <= 9; i++)
@@ -16,17 +40,17 @@ Sudoku9by9PuzzleBoard::Sudoku9by9PuzzleBoard()
 	number_of_solutions_for_unit_test_check = NOSFUNTC_NOTSET;		/* Not set yet */
 }
 
-int ReadCell(int row, int column)
+int Sudoku9by9PuzzleBoard::ReadCell(int row, int column)
 {
 	return(cells[row][column]);
 }
 
-int ReadPermanent(int row, int column)
+bool Sudoku9by9PuzzleBoard::ReadPermanent(int row, int column)
 {
-	return(permanent[row][column]);
+	return(permanent_cells[row][column]);
 }
 
-status_t WriteCell(int row, int column, int cell_value)
+status_t Sudoku9by9PuzzleBoard::WriteCell(int row, int column, int cell_value)
 {
 	cells[row][column] = cell_value;
 	return SUDOKU_SUCCESS;
@@ -44,9 +68,9 @@ void Sudoku9by9PuzzleBoard::Print_PuzzleBoard()
 		{
 			if (permanent_cells[i][j] == true)
 			{
-				setcolor(12);
+				SetColor(COLOR_RED);
 				cout << cells[i][j] << " ";
-				setcolor(7);
+				SetColor(COLOR_WHITE);
 			}
 			else cout << cells[i][j] << " ";
 			if (j % 3 == 0) cout << "| ";
@@ -194,3 +218,24 @@ void Sudoku9by9PuzzleBoard::BuiltInUnitTest01Solution()
 	cells[9][8] = 7; permanent_cells[9][8] = true;
 	cells[9][9] = 9; permanent_cells[9][9] = true;
 }
+
+void Sudoku9by9PuzzleBoard::set_number_of_solutions_for_unit_test_check(int passed_number_of_solutions_for_unit_test_check)
+{
+	number_of_solutions_for_unit_test_check = passed_number_of_solutions_for_unit_test_check;
+
+	return;
+}
+
+void Sudoku9by9PuzzleBoard::increment_number_of_solutions_for_unit_test_check(void)
+{
+	number_of_solutions_for_unit_test_check++;
+
+	return;
+}
+
+int Sudoku9by9PuzzleBoard::read_number_of_solutions_for_unit_test_check(void)
+{
+	return(number_of_solutions_for_unit_test_check);
+}
+
+Sudoku9by9PuzzleBoard::~Sudoku9by9PuzzleBoard(void) {}
