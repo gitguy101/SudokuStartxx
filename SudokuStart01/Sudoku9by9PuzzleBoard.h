@@ -27,6 +27,10 @@ public:
 
 	void BuiltInUnitTest01Puzzle();
 	void BuiltInUnitTest01Solution();
+	void BuiltInUnitTest02Puzzle();
+	void BuiltInUnitTest02Solution();
+	void BuiltInUnitTest03Puzzle();
+	void BuiltInUnitTest03Solution();
 
 	void set_number_of_solutions_for_unit_test_check(int);
 	void increment_number_of_solutions_for_unit_test_check(void);
