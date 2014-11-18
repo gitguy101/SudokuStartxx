@@ -21,8 +21,14 @@ SudokuStart01.vcxproj.filters
     similar extensions under a specific node (for e.g. ".cpp" files are associated with the
     "Source Files" filter).
 
-SudokuStart01.cpp
-    This is the main application source file.
+MainTest.cpp
+	Unit Test Driver
+
+Sudoku9by9PuzzleBoard.cpp
+	Puzzle Board Representation Class
+
+Sudoku9by9SolverAnalzyer.cpp
+	Puzzle Solver and Analzyer Class
 
 /////////////////////////////////////////////////////////////////////////////
 Other standard files:
